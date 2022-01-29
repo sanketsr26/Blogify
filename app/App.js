@@ -4,7 +4,7 @@ import ReactDom from "react-dom"
 const App = () => {
   return (
     <>
-      <h1>Welcome To Blogify</h1>
+      <h1>Welcome To Blogify!</h1>
     </>
   )
 }
