@@ -1,7 +1,27 @@
-import React from "react"
+import React, { useState } from "react"
+import Axios from "axios"
 import Page from "./Page"
 
 const HomeGuest = () => {
+  const [username, setUsername] = useState()
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+  const handleSubmit = async e => {
+    e.preventDefault()
+    try {
+      await Axios.post("http://localhost:8080/register", {
+        username,
+        email,
+        password
+      })
+      console.log("SignUp is successful")
+      setUsername("")
+      setEmail("")
+      setPassword("")
+    } catch (e) {
+      console.log(e.response.data)
+    }
+  }
   return (
     <Page wide={true} title="Home">
       <div className="row align-items-center">
@@ -15,7 +35,7 @@ const HomeGuest = () => {
           </p>
         </div>
         <div className="col-lg-5 pl-lg-5 pb-3 py-lg-5">
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="username-register" className="text-muted mb-1">
                 <small>Username</small>
@@ -24,6 +44,8 @@ const HomeGuest = () => {
                 id="username-register"
                 name="username"
                 className="form-control"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
                 type="text"
                 placeholder="Pick a username"
                 autoComplete="off"
@@ -37,6 +59,8 @@ const HomeGuest = () => {
                 id="email-register"
                 name="email"
                 className="form-control"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
                 type="text"
                 placeholder="you@example.com"
                 autoComplete="off"
@@ -50,6 +74,8 @@ const HomeGuest = () => {
                 id="password-register"
                 name="password"
                 className="form-control"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
                 type="password"
                 placeholder="Create a password"
               />
