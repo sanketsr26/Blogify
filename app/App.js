@@ -9,6 +9,7 @@ import Header from "./components/Header"
 import Home from "./components/Home"
 import HomeGuest from "./components/HomeGuest"
 import Terms from "./components/Terms"
+import ViewSinglePost from "./components/ViewSinglePost"
 
 Axios.defaults.baseURL = "http://localhost:8080"
 
@@ -21,7 +22,8 @@ const App = () => {
       <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
       <Routes>
         <Route path="/" element={loggedIn ? <Home /> : <HomeGuest />} />
-        <Route path="create-post" element={<CreatePost />} />
+        <Route path="/post/:id" element={<ViewSinglePost />} />
+        <Route path="/create-post" element={<CreatePost />} />
         <Route path="/about-us" element={<About />} />
         <Route path="/terms" element={<Terms />} />
       </Routes>

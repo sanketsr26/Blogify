@@ -1,19 +1,23 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Axios from "axios"
 import Page from "./Page"
 
 const CreatePost = props => {
   const [title, setTitle] = useState("")
   const [body, setBody] = useState("")
+  const navigateTo = useNavigate()
   let user = JSON.parse(localStorage.getItem("user"))
   const handleSubmit = async e => {
     e.preventDefault()
     try {
-      await Axios.post("/create-post", {
+      const response = await Axios.post("/create-post", {
         title,
         body,
         token: user.access_token
       })
+      //redirect after creating post
+      navigateTo(`/post/${response.data}`)
     } catch (error) {
       console.log(error.response.data)
     }
