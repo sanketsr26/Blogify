@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "react-router-dom"
 
 const HeaderLoggedIn = props => {
   const handleSignOut = e => {
@@ -19,9 +20,9 @@ const HeaderLoggedIn = props => {
       <a href="#" className="mr-2">
         <img className="small-header-avatar" src={user ? user.avatar : ""} />
       </a>
-      <a className="btn btn-sm btn-success mr-2" href="/create-post">
+      <Link className="btn btn-sm btn-success mr-2" to="/create-post">
         Create Post
-      </a>
+      </Link>
       <button className="btn btn-sm btn-secondary" onClick={handleSignOut}>
         Sign Out
       </button>

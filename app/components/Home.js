@@ -1,10 +1,10 @@
 import React from "react"
-import Container from "./Container"
+import Page from "./Page"
 
 const Home = () => {
   let user = JSON.parse(localStorage.getItem("user"))
   return (
-    <Container title="Feed">
+    <Page title="Posts">
       <h2 className="text-center">
         Hello <strong>{user.username}</strong>, your feed is empty.
       </h2>
@@ -14,7 +14,7 @@ const Home = () => {
         the &ldquo;Search&rdquo; feature in the top menu bar to find content
         written by people with similar interests and then follow them.
       </p>
-    </Container>
+    </Page>
   )
 }
 
