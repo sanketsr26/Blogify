@@ -1,11 +1,13 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import Axios from "axios"
 import Page from "./Page"
+import Context from "../Context"
 
 const CreatePost = props => {
   const [title, setTitle] = useState("")
   const [body, setBody] = useState("")
+  const { addFlashMessages } = useContext(Context)
   const navigateTo = useNavigate()
   let user = JSON.parse(localStorage.getItem("user"))
   const handleSubmit = async e => {
@@ -16,11 +18,12 @@ const CreatePost = props => {
         body,
         token: user.access_token
       })
-      props.addFlashMessage("Great! A new post has been successfully created.")
+      addFlashMessages("Great! A new post has been successfully created.")
       //redirect after creating post
       navigateTo(`/post/${response.data}`)
     } catch (error) {
-      console.log(error.response.data)
+      console.log(error.response)
+      addFlashMessages("Oops! Something went wrong")
     }
   }
   return (

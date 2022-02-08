@@ -1,13 +1,17 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Link } from "react-router-dom"
+import Context from "../Context"
 
 const HeaderLoggedIn = props => {
+  const { addFlashMessages, setLoggedIn } = useContext(Context)
   const handleSignOut = e => {
     e.preventDefault()
     localStorage.removeItem("user")
-    props.setLoggedIn(false)
+    addFlashMessages("You are logged out!")
+    setLoggedIn(false)
   }
   let user = JSON.parse(localStorage.getItem("user"))
+
   return (
     <div className="flex-row my-3 my-md-0">
       <a href="#" className="text-white mr-2 header-search-icon">

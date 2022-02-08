@@ -1,9 +1,11 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import Axios from "axios"
+import Context from "../Context"
 
 const HeaderLoggedOut = props => {
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
+  const { addFlashMessages, setLoggedIn } = useContext(Context)
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -21,9 +23,11 @@ const HeaderLoggedOut = props => {
             avatar: response.data.avatar
           })
         )
-        props.setLoggedIn(true)
+        addFlashMessages("You're logged in!")
+        setLoggedIn(true)
       } else {
         console.log("Error: Incorrect username/password")
+        addFlashMessages("Oops! Incorrect username/password")
       }
     } catch (error) {
       console.log(error.response.data)
