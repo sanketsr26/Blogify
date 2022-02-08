@@ -16,6 +16,7 @@ const CreatePost = props => {
         body,
         token: user.access_token
       })
+      props.addFlashMessage("Great! A new post has been successfully created.")
       //redirect after creating post
       navigateTo(`/post/${response.data}`)
     } catch (error) {
