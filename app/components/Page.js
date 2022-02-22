@@ -6,6 +6,7 @@ const Page = props => {
     document.title = `${props.title} | Blogify`
     window.scrollTo(0, 0)
   }, [])
+
   return <Container wide={props.wide}>{props.children}</Container>
 }
 

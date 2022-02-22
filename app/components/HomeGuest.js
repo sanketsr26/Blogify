@@ -6,6 +6,7 @@ const HomeGuest = () => {
   const [username, setUsername] = useState()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
+
   const handleSubmit = async e => {
     e.preventDefault()
     try {
@@ -22,6 +23,7 @@ const HomeGuest = () => {
       console.log(e.response.data)
     }
   }
+
   return (
     <Page wide={true} title="Home">
       <div className="row align-items-center">
