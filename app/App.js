@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from "react"
+import React, { useState, useReducer, useEffect } from "react"
 import ReactDom from "react-dom"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { useImmerReducer } from "use-immer"
@@ -20,12 +20,15 @@ Axios.defaults.baseURL = "http://localhost:8080"
 const App = () => {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("user")),
-    flashMessages: []
+    flashMessages: [],
+    user: localStorage.getItem("user")
   }
+
   const reducerFn = (draft, action) => {
     switch (action.type) {
       case "login":
         draft.loggedIn = true
+        draft.user = action.userData
         return
       case "logout":
         draft.loggedIn = false
@@ -35,7 +38,16 @@ const App = () => {
         return
     }
   }
+
   const [state, dispatch] = useImmerReducer(reducerFn, initialState)
+
+  useEffect(() => {
+    if (state.loggedIn) {
+      localStorage.setItem("user", JSON.stringify(state.user))
+    } else {
+      localStorage.removeItem("user")
+    }
+  }, [state.loggedIn])
 
   return (
     <StateContext.Provider value={state}>

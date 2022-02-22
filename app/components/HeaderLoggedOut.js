@@ -5,6 +5,7 @@ import DispatchContext from "../context/DispatchContext"
 const HeaderLoggedOut = props => {
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
+
   const appDispatch = useContext(DispatchContext)
 
   const handleSubmit = async e => {
@@ -15,16 +16,8 @@ const HeaderLoggedOut = props => {
         password
       })
       if (response.data) {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            access_token: response.data.token,
-            username: response.data.username,
-            avatar: response.data.avatar
-          })
-        )
         // addFlashMessages("You're logged in!")
-        appDispatch({ type: "login" })
+        appDispatch({ type: "login", userData: response.data })
       } else {
         console.log("Error: Incorrect username/password")
         addFlashMessages("Oops! Incorrect username/password")

@@ -1,18 +1,20 @@
 import React, { useContext } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import DispatchContext from "../context/DispatchContext"
+import StateContext from "../context/StateContext"
 
 const HeaderLoggedIn = props => {
   const appDispatch = useContext(DispatchContext)
+  const appState = useContext(StateContext)
+
   const navigateTo = useNavigate()
+
   const handleSignOut = e => {
     e.preventDefault()
     appDispatch({ type: "logout" })
-    localStorage.removeItem("user")
     navigateTo("/")
     //addFlashMessages("You are logged out!")
   }
-  let user = JSON.parse(localStorage.getItem("user"))
 
   return (
     <div className="flex-row my-3 my-md-0">
@@ -24,7 +26,10 @@ const HeaderLoggedIn = props => {
         <span className="chat-count-badge text-white"> </span>
       </span>
       <a href="#" className="mr-2">
-        <img className="small-header-avatar" src={user ? user.avatar : ""} />
+        <img
+          className="small-header-avatar"
+          src={appState.user ? appState.user.avatar : ""}
+        />
       </a>
       <Link className="btn btn-sm btn-success mr-2" to="/create-post">
         Create Post

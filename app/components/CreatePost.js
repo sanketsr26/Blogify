@@ -3,14 +3,16 @@ import { useNavigate } from "react-router-dom"
 import Axios from "axios"
 import Page from "./Page"
 import DispatchContext from "../context/DispatchContext"
+import StateContext from "../context/StateContext"
 
 const CreatePost = props => {
   const [title, setTitle] = useState("")
   const [body, setBody] = useState("")
-  const appDispatch = useContext(DispatchContext)
-  const navigateTo = useNavigate()
 
-  let user = JSON.parse(localStorage.getItem("user"))
+  const appDispatch = useContext(DispatchContext)
+  const appState = useContext(StateContext)
+
+  const navigateTo = useNavigate()
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -18,7 +20,7 @@ const CreatePost = props => {
       const response = await Axios.post("/create-post", {
         title,
         body,
-        token: user.access_token
+        token: appState.user.token
       })
       appDispatch({
         type: "flashMessage",
