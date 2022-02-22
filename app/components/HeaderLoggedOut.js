@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react"
 import Axios from "axios"
-import Context from "../Context"
+import DispatchContext from "../context/DispatchContext"
 
 const HeaderLoggedOut = props => {
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
-  const { addFlashMessages, setLoggedIn } = useContext(Context)
+  const appDispatch = useContext(DispatchContext)
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -23,8 +23,8 @@ const HeaderLoggedOut = props => {
             avatar: response.data.avatar
           })
         )
-        addFlashMessages("You're logged in!")
-        setLoggedIn(true)
+        // addFlashMessages("You're logged in!")
+        appDispatch({ type: "login" })
       } else {
         console.log("Error: Incorrect username/password")
         addFlashMessages("Oops! Incorrect username/password")

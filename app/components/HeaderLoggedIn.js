@@ -1,14 +1,16 @@
 import React, { useContext } from "react"
-import { Link } from "react-router-dom"
-import Context from "../Context"
+import { Link, useNavigate } from "react-router-dom"
+import DispatchContext from "../context/DispatchContext"
 
 const HeaderLoggedIn = props => {
-  const { addFlashMessages, setLoggedIn } = useContext(Context)
+  const appDispatch = useContext(DispatchContext)
+  const navigateTo = useNavigate()
   const handleSignOut = e => {
     e.preventDefault()
+    appDispatch({ type: "logout" })
     localStorage.removeItem("user")
-    addFlashMessages("You are logged out!")
-    setLoggedIn(false)
+    navigateTo("/")
+    //addFlashMessages("You are logged out!")
   }
   let user = JSON.parse(localStorage.getItem("user"))
 

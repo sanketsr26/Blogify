@@ -2,14 +2,16 @@ import React, { useState, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import Axios from "axios"
 import Page from "./Page"
-import Context from "../Context"
+import DispatchContext from "../context/DispatchContext"
 
 const CreatePost = props => {
   const [title, setTitle] = useState("")
   const [body, setBody] = useState("")
-  const { addFlashMessages } = useContext(Context)
+  const appDispatch = useContext(DispatchContext)
   const navigateTo = useNavigate()
+
   let user = JSON.parse(localStorage.getItem("user"))
+
   const handleSubmit = async e => {
     e.preventDefault()
     try {
@@ -18,12 +20,18 @@ const CreatePost = props => {
         body,
         token: user.access_token
       })
-      addFlashMessages("Great! A new post has been successfully created.")
+      appDispatch({
+        type: "flashMessage",
+        payload: "Great! A new post has been successfully created."
+      })
       //redirect after creating post
       navigateTo(`/post/${response.data}`)
     } catch (error) {
       console.log(error.response)
-      addFlashMessages("Oops! Something went wrong")
+      appDispatch({
+        type: "flashMessage",
+        payload: "Oops! Something went wrong"
+      })
     }
   }
   return (
