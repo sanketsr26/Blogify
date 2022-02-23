@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import Axios from "axios"
+import LoaderIcon from "./LoaderIcon"
 
 const ProfilePosts = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -24,7 +25,7 @@ const ProfilePosts = () => {
   }, [])
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <LoaderIcon />
   }
 
   return (

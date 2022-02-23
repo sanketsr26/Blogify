@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
 import Axios from "axios"
 import Page from "./Page"
+import LoaderIcon from "./LoaderIcon"
 
 const ViewSinglePost = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -27,7 +28,7 @@ const ViewSinglePost = () => {
   if (isLoading) {
     return (
       <Page title="Loading Post...">
-        <div>Post is loading</div>
+        <LoaderIcon />
       </Page>
     )
   }
