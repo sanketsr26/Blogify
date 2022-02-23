@@ -14,6 +14,7 @@ import ViewSinglePost from "./components/ViewSinglePost"
 import FlashMessage from "./components/FlashMessages"
 import StateContext from "./context/StateContext"
 import DispatchContext from "./context/DispatchContext"
+import Profile from "./components/Profile"
 
 Axios.defaults.baseURL = "http://localhost:8080"
 
@@ -56,6 +57,7 @@ const App = () => {
           <FlashMessage flashMessages={state.flashMessages} />
           <Header />
           <Routes>
+            <Route path="/profile/:username/*" element={<Profile />} />
             <Route
               path="/"
               element={state.loggedIn ? <Home /> : <HomeGuest />}
