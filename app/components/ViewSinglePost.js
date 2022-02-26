@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
 import Axios from "axios"
+import ReactMarkdown from "react-markdown"
 import Page from "./Page"
 import LoaderIcon from "./LoaderIcon"
 
@@ -70,7 +71,7 @@ const ViewSinglePost = () => {
       </p>
 
       <div className="body-content">
-        <p>{post.body}</p>
+        <ReactMarkdown children={post.body} />
       </div>
     </Page>
   )

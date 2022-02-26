@@ -22,7 +22,7 @@ const App = () => {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("user")),
     flashMessages: [],
-    user: localStorage.getItem("user")
+    user: JSON.parse(localStorage.getItem("user"))
   }
 
   const reducerFn = (draft, action) => {
