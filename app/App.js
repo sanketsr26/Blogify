@@ -15,6 +15,7 @@ import FlashMessage from "./components/FlashMessages"
 import StateContext from "./context/StateContext"
 import DispatchContext from "./context/DispatchContext"
 import Profile from "./components/Profile"
+import EditPost from "./components/EditPost"
 
 Axios.defaults.baseURL = "http://localhost:8080"
 
@@ -63,6 +64,7 @@ const App = () => {
               element={state.loggedIn ? <Home /> : <HomeGuest />}
             />
             <Route path="/post/:id" element={<ViewSinglePost />} />
+            <Route path="/post/:id/edit" element={<EditPost />}></Route>
             <Route path="/create-post" element={<CreatePost />} />
             <Route path="/about-us" element={<About />} />
             <Route path="/terms" element={<Terms />} />
