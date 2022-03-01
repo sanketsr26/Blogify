@@ -97,6 +97,7 @@ const EditPost = () => {
               type: "flashMessage",
               payload: "You do not have permission to edit this post"
             })
+            //redirect
             navigateTo(`/post/${state.id}`)
           }
         } else {
