@@ -41,7 +41,9 @@ const EditPost = () => {
         draft.body.value = action.payload
         return
       case "submitRequest":
-        draft.sendCount++
+        if (!draft.title.hasErrors && !draft.body.hasErrors) {
+          draft.sendCount++
+        }
         return
       case "saveRequestStarted":
         draft.isSaving = true
@@ -49,10 +51,29 @@ const EditPost = () => {
       case "saveRequestFinished":
         draft.isSaving = false
         return
+      case "titleValidation":
+        if (!action.payload.trim()) {
+          draft.title.hasErrors = true
+          draft.title.errMsg = "You must provide title"
+        }
+        return
+      case "bodyValidation":
+        if (!action.payload.trim()) {
+          draft.body.hasErrors = true
+          draft.body.errMsg = "You must provide body content"
+        }
+        return
     }
   }
 
   const [state, dispatch] = useImmerReducer(reducerFn, initialState)
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    dispatch({ type: "titleValidation", payload: state.title.value })
+    dispatch({ type: "bodyValidation", payload: state.body.value })
+    dispatch({ type: "submitRequest" })
+  }
 
   useEffect(() => {
     const request = Axios.CancelToken.source()
@@ -107,11 +128,6 @@ const EditPost = () => {
     }
   }, [state.sendCount])
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    dispatch({ type: "submitRequest" })
-  }
-
   if (state.isFetching) {
     return (
       <Page title="Loading Post...">
@@ -134,12 +150,20 @@ const EditPost = () => {
             className="form-control form-control-lg form-control-title"
             type="text"
             value={state.title.value}
+            onBlur={e =>
+              dispatch({ type: "titleValidation", payload: e.target.value })
+            }
             onChange={e =>
               dispatch({ type: "titleChange", payload: e.target.value })
             }
             placeholder=""
             autoComplete="off"
           />
+          {state.title.hasErrors && (
+            <div className="alert alert-danger small liveValidateMessage">
+              {state.title.errMsg}
+            </div>
+          )}
         </div>
 
         <div className="form-group">
@@ -152,10 +176,18 @@ const EditPost = () => {
             className="body-content tall-textarea form-control"
             type="text"
             value={state.body.value}
+            onBlur={e =>
+              dispatch({ type: "bodyValidation", payload: e.target.value })
+            }
             onChange={e =>
               dispatch({ type: "bodyChange", payload: e.target.value })
             }
           />
+          {state.body.hasErrors && (
+            <div className="alert alert-danger small liveValidateMessage">
+              {state.body.errMsg}
+            </div>
+          )}
         </div>
 
         <button disabled={state.isSaving} className="btn btn-primary">
