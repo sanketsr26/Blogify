@@ -15,6 +15,8 @@ import FlashMessage from "./components/FlashMessages"
 import StateContext from "./context/StateContext"
 import DispatchContext from "./context/DispatchContext"
 import Profile from "./components/Profile"
+import EditPost from "./components/EditPost"
+import NotFound from "./components/NotFound"
 
 Axios.defaults.baseURL = "http://localhost:8080"
 
@@ -22,7 +24,7 @@ const App = () => {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("user")),
     flashMessages: [],
-    user: localStorage.getItem("user")
+    user: JSON.parse(localStorage.getItem("user"))
   }
 
   const reducerFn = (draft, action) => {
@@ -63,9 +65,11 @@ const App = () => {
               element={state.loggedIn ? <Home /> : <HomeGuest />}
             />
             <Route path="/post/:id" element={<ViewSinglePost />} />
+            <Route path="/post/:id/edit" element={<EditPost />}></Route>
             <Route path="/create-post" element={<CreatePost />} />
             <Route path="/about-us" element={<About />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
         </BrowserRouter>
