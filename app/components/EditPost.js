@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react"
-import { Link, useParams } from "react-router-dom"
+import React, { useEffect, useContext } from "react"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import Axios from "axios"
 import { useImmerReducer } from "use-immer"
 import Page from "./Page"
@@ -11,6 +11,9 @@ import NotFound from "./NotFound"
 const EditPost = () => {
   const appState = useContext(StateContext)
   const appDispatch = useContext(DispatchContext)
+
+  const navigateTo = useNavigate()
+
   const initialState = {
     title: {
       value: "",
@@ -89,6 +92,13 @@ const EditPost = () => {
         })
         if (response.data) {
           dispatch({ type: "postFetchComplete", payload: response.data })
+          if (appState.user.username !== response.data.author.username) {
+            appDispatch({
+              type: "flashMessage",
+              payload: "You do not have permission to edit this post"
+            })
+            navigateTo(`/post/${state.id}`)
+          }
         } else {
           dispatch({ type: "postNotFound" })
         }
