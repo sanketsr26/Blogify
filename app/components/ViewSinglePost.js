@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown"
 import ReactTooltip from "react-tooltip"
 import Page from "./Page"
 import LoaderIcon from "./LoaderIcon"
+import NotFound from "./NotFound"
 
 const ViewSinglePost = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -32,6 +33,10 @@ const ViewSinglePost = () => {
       request.cancel()
     }
   }, [])
+
+  if (!isLoading && !post) {
+    return <NotFound />
+  }
 
   if (isLoading) {
     return (

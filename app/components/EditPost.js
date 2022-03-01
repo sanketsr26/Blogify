@@ -6,6 +6,7 @@ import Page from "./Page"
 import LoaderIcon from "./LoaderIcon"
 import StateContext from "../context/StateContext"
 import DispatchContext from "../context/DispatchContext"
+import NotFound from "./NotFound"
 
 const EditPost = () => {
   const appState = useContext(StateContext)
@@ -24,7 +25,8 @@ const EditPost = () => {
     isFetching: true,
     isSaving: false,
     id: useParams().id,
-    sendCount: 0
+    sendCount: 0,
+    notFound: false
   }
 
   const reducerFn = (draft, action) => {
@@ -63,6 +65,9 @@ const EditPost = () => {
           draft.body.errMsg = "You must provide body content"
         }
         return
+      case "postNotFound":
+        draft.notFound = true
+        return
     }
   }
 
@@ -82,8 +87,10 @@ const EditPost = () => {
         const response = await Axios.get(`/post/${state.id}`, {
           cancelToken: request.token
         })
-        if (response.status === 200) {
+        if (response.data) {
           dispatch({ type: "postFetchComplete", payload: response.data })
+        } else {
+          dispatch({ type: "postNotFound" })
         }
       } catch (error) {
         console.log(error)
@@ -127,6 +134,10 @@ const EditPost = () => {
       }
     }
   }, [state.sendCount])
+
+  if (state.notFound) {
+    return <NotFound />
+  }
 
   if (state.isFetching) {
     return (
