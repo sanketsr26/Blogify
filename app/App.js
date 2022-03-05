@@ -17,6 +17,7 @@ import DispatchContext from "./context/DispatchContext"
 import Profile from "./components/Profile"
 import EditPost from "./components/EditPost"
 import NotFound from "./components/NotFound"
+import Search from "./components/Search"
 
 Axios.defaults.baseURL = "http://localhost:8080"
 
@@ -24,7 +25,8 @@ const App = () => {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("user")),
     flashMessages: [],
-    user: JSON.parse(localStorage.getItem("user"))
+    user: JSON.parse(localStorage.getItem("user")),
+    isSearchOpen: false
   }
 
   const reducerFn = (draft, action) => {
@@ -38,6 +40,12 @@ const App = () => {
         return
       case "flashMessage":
         draft.flashMessages.push(action.payload)
+        return
+      case "openSearch":
+        draft.isSearchOpen = true
+        return
+      case "closeSearch":
+        draft.isSearchOpen = false
         return
     }
   }
@@ -68,6 +76,7 @@ const App = () => {
             <Route path="/terms" element={<Terms />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          {state.isSearchOpen && <Search />}
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>
