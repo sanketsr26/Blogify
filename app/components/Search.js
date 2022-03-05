@@ -31,7 +31,7 @@ function Search() {
           //calling axios in separate useEffect using requestCount counter. Just to leverage cancelToken  for cleanup
           draft.requestCount++
         })
-      }, 3000)
+      }, 800)
       return () => clearTimeout(delay)
     } else {
       setState(draft => {
@@ -121,13 +121,13 @@ function Search() {
               (state.show == "results" ? "live-search-results--visible" : "")
             }
           >
-            <div className="list-group shadow-sm">
-              <div className="list-group-item active">
-                <strong>Search Results</strong> ({state.results.length} item(s)
-                found)
-              </div>
-              {state.results.length &&
-                state.results.map((post, key) => {
+            {Boolean(state.results.length) && (
+              <div className="list-group shadow-sm">
+                <div className="list-group-item active">
+                  <strong>Search Results</strong> ({state.results.length}{" "}
+                  item(s) found)
+                </div>
+                {state.results.map((post, key) => {
                   const date = new Date(post.createdDate)
                   const formattedDate = `${
                     date.getMonth() + 1
@@ -147,7 +147,13 @@ function Search() {
                     </Link>
                   )
                 })}
-            </div>
+              </div>
+            )}
+            {!Boolean(state.results.length) && (
+              <p className="alert alert-danger text-center shadow-sm">
+                Whoops, couldn't find any result.
+              </p>
+            )}
           </div>
         </div>
       </div>
