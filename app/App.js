@@ -3,6 +3,7 @@ import ReactDom from "react-dom"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { useImmerReducer } from "use-immer"
 import Axios from "axios"
+import { CSSTransition } from "react-transition-group"
 import About from "./components/About"
 import CreatePost from "./components/CreatePost"
 import Footer from "./components/Footer"
@@ -68,7 +69,10 @@ const App = () => {
           <Header />
           <Routes>
             <Route path="/profile/:username/*" element={<Profile />} />
-            <Route path="/" element={state.loggedIn ? <Home /> : <HomeGuest />} />
+            <Route
+              path="/"
+              element={state.loggedIn ? <Home /> : <HomeGuest />}
+            />
             <Route path="/post/:id" element={<ViewSinglePost />} />
             <Route path="/post/:id/edit" element={<EditPost />}></Route>
             <Route path="/create-post" element={<CreatePost />} />
@@ -76,7 +80,14 @@ const App = () => {
             <Route path="/terms" element={<Terms />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-          {state.isSearchOpen && <Search />}
+          <CSSTransition
+            timeout={330}
+            in={state.isSearchOpen}
+            classNames="search-overlay"
+            unmountOnExit
+          >
+            <Search />
+          </CSSTransition>
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>
