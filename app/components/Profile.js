@@ -53,7 +53,7 @@ const Profile = () => {
         draft.followActionLoading = true
       })
       const request = Axios.CancelToken.source()
-      const fetchProfileData = async () => {
+      const triggerFollow = async () => {
         try {
           const response = await Axios.post(
             `/addFollow/${state.profileData.profileUsername}`,
@@ -69,7 +69,7 @@ const Profile = () => {
           console.log(e)
         }
       }
-      fetchProfileData()
+      triggerFollow()
       return () => {
         request.cancel()
       }
@@ -82,7 +82,7 @@ const Profile = () => {
         draft.followActionLoading = true
       })
       const request = Axios.CancelToken.source()
-      const fetchProfileData = async () => {
+      const triggerUnfollow = async () => {
         try {
           const response = await Axios.post(
             `/removeFollow/${state.profileData.profileUsername}`,
@@ -98,7 +98,7 @@ const Profile = () => {
           console.log(e)
         }
       }
-      fetchProfileData()
+      triggerUnfollow()
       return () => {
         request.cancel()
       }
@@ -116,7 +116,6 @@ const Profile = () => {
       draft.stopFollowingRequestCount++
     })
   }
-  console.log(state)
 
   return (
     <>
