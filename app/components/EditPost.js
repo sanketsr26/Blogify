@@ -168,39 +168,16 @@ const EditPost = () => {
           <label htmlFor="post-title" className="text-muted mb-1">
             <small>Title</small>
           </label>
-          <input
-            autoFocus
-            name="title"
-            id="post-title"
-            className="form-control form-control-lg form-control-title"
-            type="text"
-            value={state.title.value}
-            onBlur={e => dispatch({ type: "titleValidation", payload: e.target.value })}
-            onChange={e => dispatch({ type: "titleChange", payload: e.target.value })}
-            placeholder=""
-            autoComplete="off"
-          />
-          {state.title.hasErrors && (
-            <div className="alert alert-danger small liveValidateMessage">{state.title.errMsg}</div>
-          )}
+          <input autoFocus name="title" id="post-title" className="form-control form-control-lg form-control-title" type="text" value={state.title.value} onBlur={e => dispatch({ type: "titleValidation", payload: e.target.value })} onChange={e => dispatch({ type: "titleChange", payload: e.target.value })} placeholder="" autoComplete="off" />
+          {state.title.hasErrors && <div className="alert alert-danger small liveValidateMessage">{state.title.errMsg}</div>}
         </div>
 
         <div className="form-group">
           <label htmlFor="post-body" className="text-muted mb-1 d-block">
             <small>Body Content</small>
           </label>
-          <textarea
-            name="body"
-            id="post-body"
-            className="body-content tall-textarea form-control"
-            type="text"
-            value={state.body.value}
-            onBlur={e => dispatch({ type: "bodyValidation", payload: e.target.value })}
-            onChange={e => dispatch({ type: "bodyChange", payload: e.target.value })}
-          />
-          {state.body.hasErrors && (
-            <div className="alert alert-danger small liveValidateMessage">{state.body.errMsg}</div>
-          )}
+          <textarea name="body" id="post-body" className="body-content tall-textarea form-control" type="text" value={state.body.value} onBlur={e => dispatch({ type: "bodyValidation", payload: e.target.value })} onChange={e => dispatch({ type: "bodyChange", payload: e.target.value })} />
+          {state.body.hasErrors && <div className="alert alert-danger small liveValidateMessage">{state.body.errMsg}</div>}
         </div>
 
         <button disabled={state.isSaving} className="btn btn-primary">

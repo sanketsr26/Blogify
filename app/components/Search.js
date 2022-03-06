@@ -89,19 +89,8 @@ function Search() {
           <label htmlFor="live-search-field" className="search-overlay-icon">
             <i className="fas fa-search"></i>
           </label>
-          <input
-            autoFocus
-            type="text"
-            autoComplete="off"
-            id="live-search-field"
-            className="live-search-field"
-            onChange={handleInput}
-            placeholder="What are you interested in?"
-          />
-          <span
-            onClick={() => appDispatch({ type: "closeSearch" })}
-            className="close-live-search"
-          >
+          <input autoFocus type="text" autoComplete="off" id="live-search-field" className="live-search-field" onChange={handleInput} placeholder="What are you interested in?" />
+          <span onClick={() => appDispatch({ type: "closeSearch" })} className="close-live-search">
             <i className="fas fa-times-circle"></i>
           </span>
         </div>
@@ -109,38 +98,19 @@ function Search() {
 
       <div className="search-overlay-bottom">
         <div className="container container--narrow py-3">
-          <div
-            className={
-              "circle-loader " +
-              (state.show == "loading" ? "circle-loader--visible" : "")
-            }
-          ></div>
-          <div
-            className={
-              "live-search-results" +
-              (state.show == "results" ? "live-search-results--visible" : "")
-            }
-          >
+          <div className={"circle-loader " + (state.show == "loading" ? "circle-loader--visible" : "")}></div>
+          <div className={"live-search-results" + (state.show == "results" ? "live-search-results--visible" : "")}>
             {Boolean(state.results.length) && (
               <div className="list-group shadow-sm">
                 <div className="list-group-item active">
-                  <strong>Search Results</strong> ({state.results.length}{" "}
-                  item(s) found)
+                  <strong>Search Results</strong> ({state.results.length} item(s) found)
                 </div>
                 {state.results.map((post, key) => {
                   const date = new Date(post.createdDate)
-                  const formattedDate = `${
-                    date.getMonth() + 1
-                  }/${date.getDate()}/${date.getFullYear()}`
+                  const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
                   return (
-                    <Link
-                      key={post._id}
-                      to={`/post/${post._id}`}
-                      onClick={() => appDispatch({ type: "closeSearch" })}
-                      className="list-group-item list-group-item-action"
-                    >
-                      <img className="avatar-tiny" src={post.author.avatar} />{" "}
-                      <strong>{post.title}</strong>{" "}
+                    <Link key={post._id} to={`/post/${post._id}`} onClick={() => appDispatch({ type: "closeSearch" })} className="list-group-item list-group-item-action">
+                      <img className="avatar-tiny" src={post.author.avatar} /> <strong>{post.title}</strong>{" "}
                       <span className="text-muted small">
                         by {post.author.username} on {formattedDate}{" "}
                       </span>
@@ -149,11 +119,7 @@ function Search() {
                 })}
               </div>
             )}
-            {!Boolean(state.results.length) && (
-              <p className="alert alert-danger text-center shadow-sm">
-                Whoops, couldn't find any result.
-              </p>
-            )}
+            {!Boolean(state.results.length) && <p className="alert alert-danger text-center shadow-sm">Whoops, couldn't find any result.</p>}
           </div>
         </div>
       </div>
