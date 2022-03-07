@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, NavLink, Routes, Route } from "react-router-dom"
 import Axios from "axios"
 import { useImmer } from "use-immer"
 import Page from "./Page"
 import StateContext from "../context/StateContext"
 import ProfilePosts from "./ProfilePosts"
+import ProfileFollowAction from "./ProfileFollowAction"
 
 const Profile = () => {
   const { username } = useParams()
@@ -24,7 +25,6 @@ const Profile = () => {
 
   useEffect(() => {
     const request = Axios.CancelToken.source()
-    console.log(username)
     const fetchProfileData = async () => {
       try {
         const response = await Axios.post(
@@ -127,17 +127,21 @@ const Profile = () => {
         </h2>
 
         <div className="profile-nav nav nav-tabs pt-2 mb-4">
-          <a href="#" className="active nav-item nav-link">
+          <NavLink to="" end className="nav-item nav-link">
             Posts: {state.profileData.counts.postCount}
-          </a>
-          <a href="#" className="nav-item nav-link">
+          </NavLink>
+          <NavLink to="followers" className="nav-item nav-link">
             Followers: {state.profileData.counts.followerCount}
-          </a>
-          <a href="#" className="nav-item nav-link">
+          </NavLink>
+          <NavLink to="following" className="nav-item nav-link">
             Following: {state.profileData.counts.followingCount}
-          </a>
+          </NavLink>
         </div>
-        <ProfilePosts />
+        <Routes>
+          <Route path="" element={<ProfilePosts />} />
+          <Route path="followers" element={<ProfileFollowAction action="followers" />} />
+          <Route path="following" element={<ProfileFollowAction action="following" />} />
+        </Routes>
       </Page>
     </>
   )
