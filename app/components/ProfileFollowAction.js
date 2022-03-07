@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import Axios from "axios"
 import LoaderIcon from "./LoaderIcon"
+import StateContext from "../context/StateContext"
 
 const ProfileFollowAction = ({ action }) => {
   const [isLoading, setIsLoading] = useState(true)
@@ -9,7 +10,7 @@ const ProfileFollowAction = ({ action }) => {
 
   const { username } = useParams()
 
-  console.log(action)
+  const appState = useContext(StateContext)
 
   useEffect(() => {
     const request = Axios.CancelToken.source()
@@ -47,6 +48,28 @@ const ProfileFollowAction = ({ action }) => {
             </Link>
           )
         })}
+
+      {followInfo.length == 0 &&
+        (action === "followers" ? (
+          appState.user.username == username ? (
+            <p className="lead text-muted text-center">You don&rsquo;t have any followers yet.</p>
+          ) : (
+            <p className="lead text-muted text-center">
+              {username} doesn&rsquo;t have any followers yet.
+              {appState.loggedIn && " Be the first to follow them!"}
+              {!appState.loggedIn && (
+                <>
+                  {" "}
+                  If you want to follow them you need to <Link to="/">sign up</Link> for an account first.{" "}
+                </>
+              )}
+            </p>
+          )
+        ) : appState.user.username == username ? (
+          <p className="lead text-muted text-center">You aren&rsquo;t following anyone yet.</p>
+        ) : (
+          <p className="lead text-muted text-center">{username} isn&rsquo;t following anyone yet.</p>
+        ))}
     </div>
   )
 }
