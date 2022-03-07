@@ -5,6 +5,7 @@ import StateContext from "../context/StateContext"
 import Page from "./Page"
 import LoaderIcon from "./LoaderIcon"
 import { Link } from "react-router-dom"
+import Post from "./Post"
 
 const Home = () => {
   const appState = useContext(StateContext)
@@ -46,16 +47,7 @@ const Home = () => {
           </h2>
           <div className="list-group">
             {state.feed.map(post => {
-              const date = new Date(post.createdDate)
-              const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
-              return (
-                <Link key={post._id} to={`/post/${post._id}`} className="list-group-item list-group-item-action">
-                  <img className="avatar-tiny" src={post.author.avatar} /> <strong>{post.title}</strong>{" "}
-                  <span className="text-muted small">
-                    by {post.author.username} on {formattedDate}{" "}
-                  </span>
-                </Link>
-              )
+              return <Post post={post} key={post._id} />
             })}
           </div>
         </>
