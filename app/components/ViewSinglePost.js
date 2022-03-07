@@ -82,9 +82,7 @@ const ViewSinglePost = () => {
   }
 
   const date = new Date(post.createdDate)
-  const formattedDate = `${
-    date.getMonth() + 1
-  }/${date.getDate()}/${date.getFullYear()}`
+  const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
 
   return (
     <Page title={post.title}>
@@ -92,21 +90,11 @@ const ViewSinglePost = () => {
         <h2>{post.title}</h2>
         {isAuthor() && (
           <span className="pt-2">
-            <Link
-              to={`/post/${post._id}/edit`}
-              className="text-primary mr-2"
-              data-tip="Edit"
-              data-for="edit"
-            >
+            <Link to={`/post/${post._id}/edit`} className="text-primary mr-2" data-tip="Edit" data-for="edit">
               <i className="fas fa-edit"></i>
             </Link>
             <ReactTooltip id="edit" className="custom-tooltip" />{" "}
-            <a
-              onClick={deleteHandler}
-              className="delete-post-button text-danger"
-              data-tip="Delete"
-              data-for="delete"
-            >
+            <a onClick={deleteHandler} className="delete-post-button text-danger" data-tip="Delete" data-for="delete">
               <i className="fas fa-trash"></i>
             </a>
             <ReactTooltip id="delete" className="custom-tooltip" />
@@ -118,11 +106,7 @@ const ViewSinglePost = () => {
         <Link to={`/profile/${post.author.username}`}>
           <img className="avatar-tiny" src={post.author.avatar} />
         </Link>
-        Posted by{" "}
-        <Link to={`/profile/${post.author.username}`}>
-          {post.author.username}
-        </Link>{" "}
-        on {formattedDate}
+        Posted by <Link to={`/profile/${post.author.username}`}>{post.author.username}</Link> on {formattedDate}
       </p>
 
       <div className="body-content">
