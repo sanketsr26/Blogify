@@ -22,13 +22,18 @@ const HeaderLoggedIn = props => {
     appDispatch({ type: "openSearch" })
   }
 
+  const handleToggleChat = e => {
+    e.preventDefault()
+    appDispatch({ type: "toggleChat" })
+  }
+
   return (
     <div className="flex-row my-3 my-md-0">
       <a onClick={handleSearchIcon} href="#" className="text-white mr-2 header-search-icon" data-tip="Search" data-for="search">
         <i className="fas fa-search"></i>
       </a>
       <ReactTooltip id="search" className="custom-tooltip" />{" "}
-      <span className="mr-2 header-chat-icon text-white" data-tip="Chat" data-for="chat">
+      <span onClick={handleToggleChat} className="mr-2 header-chat-icon text-white" data-tip="Chat" data-for="chat">
         <i className="fas fa-comment"></i>
         <span className="chat-count-badge text-white"> </span>
       </span>{" "}
