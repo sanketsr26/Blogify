@@ -17,6 +17,7 @@ function Chat() {
   })
 
   const chatField = useRef(null)
+  const chatLog = useRef(null)
 
   useEffect(() => {
     if (appState.isChatOpen) {
@@ -32,6 +33,10 @@ function Chat() {
       })
     })
   }, [])
+
+  useEffect(() => {
+    chatLog.current.scrollTop = chatLog.current.scrollHeight
+  }, [state.chatMessages])
 
   const handleFieldChange = e => {
     const value = e.target.value
@@ -59,7 +64,7 @@ function Chat() {
           <i className="fas fa-times-circle"></i>
         </span>
       </div>
-      <div id="chat" className="chat-log">
+      <div id="chat" className="chat-log" ref={chatLog}>
         {state.chatMessages.map((msg, index) => {
           if (appState.user.username === msg.username) {
             return (
