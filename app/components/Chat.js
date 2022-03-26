@@ -1,10 +1,20 @@
 import React, { useContext, useEffect, useRef } from "react"
+import { useImmer } from "use-immer"
 import DispatchContext from "../context/DispatchContext"
 import StateContext from "../context/StateContext"
+import io from "socket.io-client"
+import { Link } from "react-router-dom"
+
+const socket = io("http://localhost:8080/")
 
 function Chat() {
   const appDispatch = useContext(DispatchContext)
   const appState = useContext(StateContext)
+
+  const [state, setState] = useImmer({
+    fieldValue: "",
+    chatMessages: []
+  })
 
   const chatField = useRef(null)
 
@@ -13,6 +23,33 @@ function Chat() {
       chatField.current.focus()
     }
   }, [appState.isChatOpen])
+
+  useEffect(() => {
+    //receive chat from server
+    socket.on("chatFromServer", message => {
+      setState(draft => {
+        draft.chatMessages.push(message)
+      })
+    })
+  }, [])
+
+  const handleFieldChange = e => {
+    const value = e.target.value
+    setState(draft => {
+      draft.fieldValue = value
+    })
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    //send message to chat server
+    socket.emit("chatFromBrowser", { message: state.fieldValue, token: appState.user.token })
+
+    setState(draft => {
+      draft.chatMessages.push({ message: state.fieldValue, username: appState.user.username, avatar: appState.user.avatar })
+      draft.fieldValue = ""
+    })
+  }
 
   return (
     <div id="chat-wrapper" className={"chat-wrapper shadow border-top border-left border-right " + (appState.isChatOpen ? "chat-wrapper--is-visible" : "")}>
@@ -23,29 +60,36 @@ function Chat() {
         </span>
       </div>
       <div id="chat" className="chat-log">
-        <div className="chat-self">
-          <div className="chat-message">
-            <div className="chat-message-inner">Hey, how are you?</div>
-          </div>
-          <img className="chat-avatar avatar-tiny" src="https://gravatar.com/avatar/b9408a09298632b5151200f3449434ef?s=128" />
-        </div>
-
-        <div className="chat-other">
-          <a href="#">
-            <img className="avatar-tiny" src="https://gravatar.com/avatar/b9216295c1e3931655bae6574ac0e4c2?s=128" />
-          </a>
-          <div className="chat-message">
-            <div className="chat-message-inner">
-              <a href="#">
-                <strong>barksalot:</strong>
-              </a>
-              Hey, I am good, how about you?
+        {state.chatMessages.map((msg, index) => {
+          if (appState.user.username === msg.username) {
+            return (
+              <div key={index} className="chat-self">
+                <div className="chat-message">
+                  <div className="chat-message-inner">{msg.message}</div>
+                </div>
+                <img className="chat-avatar avatar-tiny" src={msg.avatar} />
+              </div>
+            )
+          }
+          return (
+            <div key={index} className="chat-other">
+              <Link to={`/profile/${msg.username}`}>
+                <img className="avatar-tiny" src={msg.avatar} />
+              </Link>
+              <div className="chat-message">
+                <div className="chat-message-inner">
+                  <Link to={`/profile/${msg.username}`}>
+                    <strong>{msg.username} : </strong>
+                  </Link>
+                  {msg.message}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          )
+        })}
       </div>
-      <form id="chatForm" className="chat-form border-top">
-        <input ref={chatField} type="text" className="chat-field" id="chatField" placeholder="Type a message…" autoComplete="off" />
+      <form onSubmit={handleSubmit} id="chatForm" className="chat-form border-top">
+        <input onChange={handleFieldChange} value={state.fieldValue} ref={chatField} type="text" className="chat-field" id="chatField" placeholder="Type a message…" autoComplete="off" />
       </form>
     </div>
   )
