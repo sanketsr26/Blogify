@@ -22,15 +22,20 @@ const HeaderLoggedIn = props => {
     appDispatch({ type: "openSearch" })
   }
 
+  const handleToggleChat = e => {
+    e.preventDefault()
+    appDispatch({ type: "toggleChat" })
+  }
+
   return (
     <div className="flex-row my-3 my-md-0">
       <a onClick={handleSearchIcon} href="#" className="text-white mr-2 header-search-icon" data-tip="Search" data-for="search">
         <i className="fas fa-search"></i>
       </a>
       <ReactTooltip id="search" className="custom-tooltip" />{" "}
-      <span className="mr-2 header-chat-icon text-white" data-tip="Chat" data-for="chat">
+      <span onClick={handleToggleChat} className={"mr-2 header-chat-icon " + (appState.unreadChatCount ? "text-danger" : "text-white")} data-tip="Chat" data-for="chat">
         <i className="fas fa-comment"></i>
-        <span className="chat-count-badge text-white"> </span>
+        {appState.unreadChatCount ? <span className="chat-count-badge text-white">{appState.unreadChatCount < 10 ? appState.unreadChatCount : "9+"}</span> : ""}
       </span>{" "}
       <ReactTooltip id="chat" className="custom-tooltip" />
       <Link to={`/profile/${appState.user.username}`} className="mr-2" data-tip="My Profile" data-for="my profile">

@@ -19,6 +19,7 @@ import Profile from "./components/Profile"
 import EditPost from "./components/EditPost"
 import NotFound from "./components/NotFound"
 import Search from "./components/Search"
+import Chat from "./components/Chat"
 
 Axios.defaults.baseURL = "http://localhost:8080"
 
@@ -27,7 +28,9 @@ const App = () => {
     loggedIn: Boolean(localStorage.getItem("user")),
     flashMessages: [],
     user: JSON.parse(localStorage.getItem("user")),
-    isSearchOpen: false
+    isSearchOpen: false,
+    isChatOpen: false,
+    unreadChatCount: 0
   }
 
   const reducerFn = (draft, action) => {
@@ -47,6 +50,21 @@ const App = () => {
         return
       case "closeSearch":
         draft.isSearchOpen = false
+        return
+      case "openChat":
+        draft.isChatOpen = true
+        return
+      case "toggleChat":
+        draft.isChatOpen = !draft.isChatOpen
+        return
+      case "closeChat":
+        draft.isChatOpen = false
+        return
+      case "incrementUnreadChatCount":
+        draft.unreadChatCount++
+        return
+      case "clearUnreadChatCount":
+        draft.unreadChatCount = 0
         return
     }
   }
@@ -80,6 +98,7 @@ const App = () => {
           <CSSTransition timeout={330} in={state.isSearchOpen} classNames="search-overlay" unmountOnExit>
             <Search />
           </CSSTransition>
+          <Chat />
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>

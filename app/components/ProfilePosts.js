@@ -37,8 +37,8 @@ const ProfilePosts = () => {
 
   return (
     <div className="list-group">
-      {posts.map((post, key) => {
-        return <Post post={post} key={post._id} />
+      {posts.map(post => {
+        return <Post post={post} key={post._id} noAuthor={true} />
       })}
     </div>
   )
