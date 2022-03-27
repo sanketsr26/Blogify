@@ -33,9 +33,9 @@ const HeaderLoggedIn = props => {
         <i className="fas fa-search"></i>
       </a>
       <ReactTooltip id="search" className="custom-tooltip" />{" "}
-      <span onClick={handleToggleChat} className="mr-2 header-chat-icon text-white" data-tip="Chat" data-for="chat">
+      <span onClick={handleToggleChat} className={"mr-2 header-chat-icon " + (appState.unreadChatCount ? "text-danger" : "text-white")} data-tip="Chat" data-for="chat">
         <i className="fas fa-comment"></i>
-        <span className="chat-count-badge text-white"> </span>
+        {appState.unreadChatCount ? <span className="chat-count-badge text-white">{appState.unreadChatCount < 10 ? appState.unreadChatCount : "9+"}</span> : ""}
       </span>{" "}
       <ReactTooltip id="chat" className="custom-tooltip" />
       <Link to={`/profile/${appState.user.username}`} className="mr-2" data-tip="My Profile" data-for="my profile">

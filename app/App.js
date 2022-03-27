@@ -29,7 +29,8 @@ const App = () => {
     flashMessages: [],
     user: JSON.parse(localStorage.getItem("user")),
     isSearchOpen: false,
-    isChatOpen: false
+    isChatOpen: false,
+    unreadChatCount: 0
   }
 
   const reducerFn = (draft, action) => {
@@ -58,6 +59,12 @@ const App = () => {
         return
       case "closeChat":
         draft.isChatOpen = false
+        return
+      case "incrementUnreadChatCount":
+        draft.unreadChatCount++
+        return
+      case "clearUnreadChatCount":
+        draft.unreadChatCount = 0
         return
     }
   }
