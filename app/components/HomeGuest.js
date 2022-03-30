@@ -168,6 +168,7 @@ function HomeGuest() {
       const submitForm = async () => {
         try {
           const response = await Axios.post("/register", { username: state.username.value, email: state.email.value, password: state.password.value }, { cancelToken: request.token })
+          //after successful registration, login with newly created user account.
           appDispatch({ type: "login", userData: response.data })
           appDispatch({ type: "flashMessage", payload: "Congrats! Welcome to your new account." })
         } catch (e) {
