@@ -14,7 +14,7 @@ const HeaderLoggedIn = props => {
     e.preventDefault()
     appDispatch({ type: "logout" })
     navigateTo("/")
-    //addFlashMessages("You are logged out!")
+    appDispatch({ type: "flashMessage", payload: "You are successfully logged out!" })
   }
 
   const handleSearchIcon = e => {

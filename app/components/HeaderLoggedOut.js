@@ -16,11 +16,10 @@ const HeaderLoggedOut = props => {
         password
       })
       if (response.data) {
-        // addFlashMessages("You're logged in!")
         appDispatch({ type: "login", userData: response.data })
+        appDispatch({ type: "flashMessage", payload: "Welcome back! You're successfully logged in" })
       } else {
-        console.log("Error: Incorrect username/password")
-        addFlashMessages("Oops! Incorrect username/password")
+        appDispatch({ type: "flashMessage", payload: "Oohoo! Incorrect username/password" })
       }
     } catch (error) {
       console.log(error.response.data)

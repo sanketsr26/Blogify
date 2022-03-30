@@ -79,6 +79,35 @@ const App = () => {
     }
   }, [state.loggedIn])
 
+  useEffect(() => {
+    if (state.loggedIn) {
+      const request = Axios.CancelToken.source()
+      const checkIfTokenIsValid = async () => {
+        try {
+          const response = await Axios.post(
+            "/checkToken",
+            {
+              token: state.user.token
+            },
+            {
+              cancelToken: request.token
+            }
+          )
+          if (!response.data) {
+            dispatch({ type: "logout" })
+            dispatch({ type: "flashMessage", payload: "Your access token has expired. Please login again." })
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      checkIfTokenIsValid()
+      return () => {
+        request.cancel()
+      }
+    }
+  }, [])
+
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
