@@ -5,8 +5,6 @@ import StateContext from "../context/StateContext"
 import io from "socket.io-client"
 import { Link } from "react-router-dom"
 
-const socket = io("http://localhost:8080/")
-
 function Chat() {
   const appDispatch = useContext(DispatchContext)
   const appState = useContext(StateContext)
@@ -18,6 +16,7 @@ function Chat() {
 
   const chatField = useRef(null)
   const chatLog = useRef(null)
+  const socket = useRef(null)
 
   useEffect(() => {
     if (appState.isChatOpen) {
@@ -27,12 +26,15 @@ function Chat() {
   }, [appState.isChatOpen])
 
   useEffect(() => {
+    socket.current = io("http://localhost:8080/")
     //receive chat from server
-    socket.on("chatFromServer", message => {
+    socket.current.on("chatFromServer", message => {
       setState(draft => {
         draft.chatMessages.push(message)
       })
     })
+
+    return () => socket.current.disconnect()
   }, [])
 
   useEffect(() => {
@@ -50,7 +52,7 @@ function Chat() {
   const handleSubmit = e => {
     e.preventDefault()
     //send message to chat server
-    socket.emit("chatFromBrowser", { message: state.fieldValue, token: appState.user.token })
+    socket.current.emit("chatFromBrowser", { message: state.fieldValue, token: appState.user.token })
 
     setState(draft => {
       draft.chatMessages.push({ message: state.fieldValue, username: appState.user.username, avatar: appState.user.avatar })
