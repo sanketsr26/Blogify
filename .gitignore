@@ -5,7 +5,7 @@
 /coverage
 
 # production
-/build
+/dist
 
 # misc
 .DS_Store
@@ -17,3 +17,4 @@ yarn-error.log*
 .idea
 .vscode
 package-lock.json
+.env
